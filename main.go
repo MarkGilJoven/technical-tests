@@ -11,12 +11,15 @@ import (
 	"rsc.io/quote/v3"
 )
 
+var GitCommit string
+
 func main() {
 	fmt.Println("starting http server ")
 	r := mux.NewRouter()
 	r.HandleFunc("/", helloworld)
 	r.HandleFunc("/go", goquote)
 	r.HandleFunc("/opt", opttruth)
+	r.HandleFunc("/version", version)
 
 	s := &http.Server{
 		Handler:      r,
@@ -38,4 +41,8 @@ func goquote(w http.ResponseWriter, r *http.Request) {
 
 func opttruth(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, quote.OptV3())
+}
+
+func version(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("Hello world, version: %s\n", GitCommit)
 }

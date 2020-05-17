@@ -7,7 +7,7 @@ ADD ./ ${APP_PATH}
 WORKDIR ${APP_PATH}
 RUN apk update --no-cache && \ 
     apk add git
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags='-extldflags "-static"' -o ${APP_BUILD_NAME} . && \ 
+RUN CGO_ENABLED=0 GOOS=linux GIT_COMMIT=$(git rev-list -1 HEAD) go build -a -installsuffix cgo -ldflags='-extldflags "-static" -X main.GitCommit=${GIT_COMMIT}' -o ${APP_BUILD_NAME} . && \ 
     chmod +x ${APP_BUILD_NAME}
 EXPOSE ${APP_PORT}
 ENTRYPOINT ["/app/golang-test"]
@@ -17,4 +17,5 @@ ENV APP_BUILD_PATH="/app" \
     APP_BUILD_NAME="golang-test"
 COPY --from=base ${APP_BUILD_PATH}/${APP_BUILD_NAME} /${APP_BUILD_PATH}/
 WORKDIR ${APP_BUILD_PATH}
+EXPOSE ${APP_PORT}
 CMD ["./golang-test"]
