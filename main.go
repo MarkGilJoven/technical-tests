@@ -37,5 +37,5 @@ func goquote(w http.ResponseWriter, r *http.Request) {
 }
 
 func opttruth(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, quote.GoV3())
+	fmt.Fprintf(w, quote.OptV3())
 }
